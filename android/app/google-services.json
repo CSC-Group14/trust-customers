@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "817768665963",
+    "firebase_url": "https://logi-trust-app-default-rtdb.firebaseio.com",
+    "project_id": "logi-trust-app",
+    "storage_bucket": "logi-trust-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:817768665963:android:228cc126b8d27fcaa6b22e",
+        "android_client_info": {
+          "package_name": "com.example.logitrustdrivers"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6MfFuksBbR4JCtHdjH7z_sRYCpna-2fk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:817768665963:android:410759a3a16a5477a6b22e",
+        "android_client_info": {
+          "package_name": "com.liam.trust"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6MfFuksBbR4JCtHdjH7z_sRYCpna-2fk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:817768665963:android:750f49701aaae854a6b22e",
+        "android_client_info": {
+          "package_name": "com.ronnie.logitrustdrivers"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6MfFuksBbR4JCtHdjH7z_sRYCpna-2fk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
