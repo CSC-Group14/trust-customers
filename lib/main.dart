@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:firebase_core/firebase_core.dart'; // Import Firebase core
+import 'package:firebase_core/firebase_core.dart';
 import 'package:trust/screens/dashboard.dart';
 import 'package:trust/screens/onboarding_screen.dart';
 import 'package:trust/screens/authentication/user_login.dart';
 import 'package:trust/screens/sign_up.dart';
-import 'package:trust/screens/map_screen.dart'; // Import the MapScreen
+import 'package:trust/screens/settings_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(); // Initialize Firebase
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -19,15 +19,15 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  Color _themeColor = Colors.blueAccent;
+  Color _themeColor = Colors.yellow;
   String _fontStyle = 'Sans';
   double _fontSize = 16.0;
 
   // Add profile data
-  String _name = 'Kashara Alvin';
-  String _email = 'kashcode@gmail.com';
-  String _location = 'City Center';
-  String _address = 'Kampala Uganda';
+  String _name = '';
+  String _email = '';
+  String _location = '';
+  String _address = '';
   String _profileImage = '';
 
   void _updateTheme(Color color) {
@@ -53,8 +53,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   // Add profile update functions
-  void _updateProfile(String name, String email, String location,
-      String address, String profileImage) {
+  void _updateProfile(String name, String email, String location, String address, String profileImage) {
     setState(() {
       _name = name;
       _email = email;
@@ -71,8 +70,7 @@ class _MyAppState extends State<MyApp> {
       builder: (context, child) {
         return MaterialApp(
           theme: ThemeData(
-            colorScheme: ColorScheme.fromSwatch(
-                primarySwatch: _createMaterialColor(_themeColor)),
+            colorScheme: ColorScheme.fromSwatch(primarySwatch: _createMaterialColor(_themeColor)),
             textTheme: TextTheme(
               bodyMedium: TextStyle(
                 fontFamily: _fontStyle,
@@ -86,19 +84,25 @@ class _MyAppState extends State<MyApp> {
             '/login': (context) => const LoginPage(),
             '/signup': (context) => SignUpPage(),
             '/dashboard': (context) => CustomerDashboard(
-                  themeColor: _themeColor,
-                  updateTheme: _updateTheme,
-                  updateLanguage: _updateLanguage,
-                  updateFontStyle: _updateFontStyle,
-                  updateFontSize: _updateFontSize,
                   name: _name,
                   email: _email,
                   location: _location,
                   address: _address,
                   profileImage: _profileImage,
-                  updateProfile: _updateProfile,
+                  updateTheme: _updateTheme,
+                  updateLanguage: _updateLanguage,
+                  updateFontStyle: _updateFontStyle,
+                  updateFontSize: _updateFontSize,
+                  themeColor: _themeColor,
+                  updateProfile: _updateProfile, // Add this line
                 ),
-            '/map': (context) => HomeTabPage(), // Added route to MapScreen
+            '/settings': (context) => SettingsScreen(
+                  themeColor: _themeColor,
+                  updateTheme: _updateTheme,
+                  updateLanguage: _updateLanguage,
+                  updateFontStyle: _updateFontStyle,
+                  updateFontSize: _updateFontSize,
+                ),
           },
         );
       },

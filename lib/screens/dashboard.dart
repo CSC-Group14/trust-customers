@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:trust/screens/profile_picture.dart';
-import 'package:trust/screens/order_card.dart';
 import 'package:trust/screens/profile_screen.dart';
 import 'package:trust/screens/order_history_screen.dart';
 import 'package:trust/screens/settings_screen.dart';
-import 'package:trust/screens/driver_info_screen.dart';
 import 'package:trust/screens/map_screen.dart'; // Import the MapScreen
 
 class CustomerDashboard extends StatelessWidget {
@@ -39,7 +37,7 @@ class CustomerDashboard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('What can we do for you today?'),
+        title: Text('Lets get to it'),
         backgroundColor: themeColor,
       ),
       drawer: Drawer(
@@ -80,10 +78,16 @@ class CustomerDashboard extends StatelessWidget {
                         )),
               );
             }),
-            _buildDrawerItem(Icons.history, 'Order History', () {
+            _buildDrawerItem(Icons.history, 'Trusted Drivers', () {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => HomeScreen()),
+              );
+            }),
+            _buildDrawerItem(Icons.directions_car, 'Get Driver', () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => HomeTabPage()),
               );
             }),
             _buildDrawerItem(Icons.settings, 'Settings', () {
@@ -97,20 +101,6 @@ class CustomerDashboard extends StatelessWidget {
                           updateFontStyle: updateFontStyle,
                           updateFontSize: updateFontSize,
                         )),
-              );
-            }),
-            _buildDrawerItem(Icons.directions_car, 'Get Driver', () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => DriverInfoScreen()),
-              );
-            }),
-            _buildDrawerItem(Icons.map, 'Open Google Maps', () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        HomeTabPage()), // Navigate to MapScreen
               );
             }),
             _buildDrawerItem(Icons.logout, 'Logout', () {
@@ -131,7 +121,7 @@ class CustomerDashboard extends StatelessWidget {
             SizedBox(height: 20.h),
             _buildSectionTitle('Recent Orders'),
             SizedBox(height: 10.h),
-            _buildRecentOrdersList(),
+            // _buildRecentOrdersList(),
           ],
         ),
       ),
@@ -172,28 +162,6 @@ class CustomerDashboard extends StatelessWidget {
     return Text(
       title,
       style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
-    );
-  }
-
-  Widget _buildRecentOrdersList() {
-    return Column(
-      children: [
-        OrderCard(
-          orderId: '1',
-          orderStatus: 'Delivered',
-          orderDate: '2024-07-01',
-        ),
-        OrderCard(
-          orderId: '2',
-          orderStatus: 'In Transit',
-          orderDate: '2024-07-02',
-        ),
-        OrderCard(
-          orderId: '3',
-          orderStatus: 'Pending',
-          orderDate: '2024-07-03',
-        ),
-      ],
     );
   }
 }

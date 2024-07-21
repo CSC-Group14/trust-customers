@@ -58,7 +58,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       _addressController.text,
       _profileImage,
     );
-    Navigator.pop(context);
+    Navigator.pop(context, _profileImage);
   }
 
   @override
@@ -84,7 +84,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 backgroundImage: _profileImage.isNotEmpty
                     ? FileImage(File(_profileImage))
                     : NetworkImage(widget.profileImage) as ImageProvider,
-                child: Icon(Icons.camera_alt),
+                child: _profileImage.isEmpty ? Icon(Icons.camera_alt) : null,
               ),
             ),
             SizedBox(height: 16.0),
@@ -112,8 +112,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ],
         ),
       ),
-      
     );
-    
   }
 }

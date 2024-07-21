@@ -13,8 +13,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('SafeBoda'),
-        backgroundColor: Colors.orange,
+        title: const Text('LogiTrust'),
+        backgroundColor: Colors.yellow,
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -23,11 +23,9 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(height: 10),
             ServicesSection(),
             const SizedBox(height: 10),
-            DiscoverSection(),
           ],
         ),
       ),
-      bottomNavigationBar: const BottomNavBar(),
     );
   }
 }
@@ -44,32 +42,20 @@ class WalletSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            'Good Evening, Ronnie!',
+            'Greetings',
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 10),
           Container(
             padding: const EdgeInsets.all(16.0),
-            color: Colors.orange,
+            color: Colors.orangeAccent,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'My Wallet',
-                  style: TextStyle(color: Colors.white),
-                ),
                 const SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      'UGX ●●●●●',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
                     const Icon(
                       Icons.visibility,
                       color: Colors.white,
@@ -77,26 +63,10 @@ class WalletSection extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 10),
-                ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
-                  ),
-                  child: const Text('Deposit Money'),
-                ),
               ],
             ),
           ),
           const SizedBox(height: 10),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              WalletActionButton(icon: Icons.send, label: 'Send Money'),
-              WalletActionButton(icon: Icons.arrow_downward, label: 'Withdraw'),
-              WalletActionButton(icon: Icons.history, label: 'Transactions'),
-              WalletActionButton(icon: Icons.payment, label: 'Pay'),
-            ],
-          ),
         ],
       ),
     );
@@ -138,10 +108,10 @@ class ServicesSection extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       children: [
         ServiceButton(
-            icon: Icons.directions_car, label: 'Order a SafeCar', onTap: () {}),
+            icon: Icons.directions_car, label: 'Order a Large Truck', onTap: () {}),
         ServiceButton(
-          icon: Icons.two_wheeler,
-          label: 'Order a SafeBoda',
+          icon: Icons.directions_car,
+          label: 'Order a Medium Truck',
           onTap: () {
             Navigator.push(
               context,
@@ -149,11 +119,6 @@ class ServicesSection extends StatelessWidget {
             );
           },
         ),
-        ServiceButton(icon: Icons.receipt, label: 'Pay Bills', onTap: () {}),
-        ServiceButton(
-            icon: Icons.local_shipping, label: 'Deliver Package', onTap: () {}),
-        ServiceButton(
-            icon: Icons.phone_android, label: 'Airtime & Data', onTap: () {}),
       ],
     );
   }
@@ -189,95 +154,3 @@ class ServiceButton extends StatelessWidget {
   }
 }
 
-class DiscoverSection extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Row(
-            children: const [
-              Text(
-                'Discover SafeBoda',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-        ),
-        Container(
-          height: 200,
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            children: [
-              DiscoverCard(),
-              DiscoverCard(),
-              DiscoverCard(),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class DiscoverCard extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 300,
-      margin: const EdgeInsets.only(left: 16, right: 8),
-      color: Colors.blueGrey,
-      child: Column(
-        children: const [
-          Expanded(
-            child: Image(
-              image: AssetImage('images/sample_ad.jpg'),
-              fit: BoxFit.cover,
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.all(16.0),
-            child: Text(
-              'Islamic Halal Brunch',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class BottomNavBar extends StatelessWidget {
-  const BottomNavBar({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      items: const [
-        BottomNavigationBarItem(
-          icon: Icon(Icons.person),
-          label: 'Activity',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.safety_divider),
-          label: 'SafeBoda',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.account_circle),
-          label: 'My account',
-        ),
-      ],
-      currentIndex: 1,
-      selectedItemColor: Colors.orange,
-      onTap: (index) {
-        // Handle tab change
-      },
-    );
-  }
-}
