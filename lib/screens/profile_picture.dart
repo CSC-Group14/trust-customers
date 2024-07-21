@@ -1,5 +1,5 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -10,20 +10,24 @@ class ProfilePicture extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CachedNetworkImage(
-      imageUrl: image ??
-          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQfPBILF6HrhlqwYmjyNFb7JiMYB55UTewG7MQBRyQox5aeOGyrCNdv5bVf7fpdAuntpM&usqp=CAU",
-      imageBuilder: (context, imageProvider) => Container(
-        width: 50.0.w,
-        height: 50.0.h,
-        decoration: BoxDecoration(
-          border: Border.all(width: 5.0, color: pixColor ?? Colors.transparent),
-          shape: BoxShape.circle,
-          image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+    return Container(
+      width: 50.0.w,
+      height: 50.0.h,
+      decoration: BoxDecoration(
+        border: Border.all(width: 5.0, color: pixColor ?? Colors.transparent),
+        shape: BoxShape.circle,
+        image: DecorationImage(
+          image: image != null && image!.isNotEmpty
+              ? (Uri.tryParse(image!)?.isAbsolute ?? false
+                  ? NetworkImage(image!)
+                  : FileImage(File(image!))) as ImageProvider
+              : AssetImage('assets/user.svg'),
+          fit: BoxFit.cover,
         ),
       ),
-      placeholder: (context, url) => SvgPicture.asset('assets/user.svg'),
-      errorWidget: (context, url, error) => SvgPicture.asset('assets/user.svg'),
+      child: image == null
+          ? SvgPicture.asset('assets/user.svg')
+          : null,
     );
   }
 }
