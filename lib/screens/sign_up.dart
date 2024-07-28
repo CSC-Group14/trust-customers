@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' as auth;
+import 'package:trust/models/users.dart' as app_models;
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -13,12 +14,13 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  FirebaseAuth _auth = FirebaseAuth.instance;
+  final auth.FirebaseAuth _auth = auth.FirebaseAuth.instance;
+  final app_models.UserRepository _userRepository = app_models.UserRepository();
 
   void _signUp() async {
     if (_formKey.currentState!.validate()) {
       try {
-        UserCredential userCredential =
+        auth.UserCredential userCredential =
             await _auth.createUserWithEmailAndPassword(
           email: _emailController.text.trim(),
           password: _passwordController.text.trim(),
@@ -27,6 +29,16 @@ class _SignUpPageState extends State<SignUpPage> {
         // Update user display name
         await userCredential.user!
             .updateDisplayName(_nameController.text.trim());
+
+        // Create a new user in Firestore
+        app_models.User newUser = app_models.User(
+          id: userCredential.user!.uid,
+          name: _nameController.text.trim(),
+          email: _emailController.text.trim(),
+          phoneNumber: _phoneController.text.trim(),
+        );
+
+        await _userRepository.createUser(newUser);
 
         // Navigate to login page after successful signup
         Navigator.pushReplacementNamed(context, '/login');

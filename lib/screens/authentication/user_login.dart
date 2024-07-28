@@ -18,6 +18,7 @@ class _LoginPageState extends State<LoginPage> {
   void _login() async {
     if (_formKey.currentState!.validate()) {
       try {
+        // ignore: unused_local_variable
         UserCredential userCredential = await _auth.signInWithEmailAndPassword(
           email: _emailController.text.trim(),
           password: _passwordController.text.trim(),
@@ -33,7 +34,8 @@ class _LoginPageState extends State<LoginPage> {
       } catch (e) {
         // Show error message if login fails
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to login. Please check your credentials.')),
+          SnackBar(
+              content: Text('Failed to login. Please check your credentials.')),
         );
       }
     }
@@ -54,12 +56,17 @@ class _LoginPageState extends State<LoginPage> {
               SizedBox(height: 20),
               Text(
                 "In LogiTrust we trust",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.yellow[800]),
+                style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.yellow[800]),
               ),
               SizedBox(height: 20),
               TextFormField(
                 controller: _emailController,
-                decoration: InputDecoration(labelText: 'Email', labelStyle: TextStyle(color: Colors.yellow[800])),
+                decoration: InputDecoration(
+                    labelText: 'Email',
+                    labelStyle: TextStyle(color: Colors.yellow[800])),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter your email';
@@ -69,7 +76,9 @@ class _LoginPageState extends State<LoginPage> {
               ),
               TextFormField(
                 controller: _passwordController,
-                decoration: InputDecoration(labelText: 'Password', labelStyle: TextStyle(color: Colors.yellow[800])),
+                decoration: InputDecoration(
+                    labelText: 'Password',
+                    labelStyle: TextStyle(color: Colors.yellow[800])),
                 obscureText: true,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -81,7 +90,8 @@ class _LoginPageState extends State<LoginPage> {
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _login,
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.yellow[800]),
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.yellow[800]),
                 child: Text('Login'),
               ),
               SizedBox(height: 20),
@@ -89,7 +99,8 @@ class _LoginPageState extends State<LoginPage> {
                 onPressed: () {
                   Navigator.pushNamed(context, '/signup');
                 },
-                child: Text("No account? Register here", style: TextStyle(color: Colors.yellow[800])),
+                child: Text("No account? Register here",
+                    style: TextStyle(color: Colors.yellow[800])),
               ),
             ],
           ),
