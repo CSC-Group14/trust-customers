@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:trust/screens/map_screen.dart'; // Import the map page
+import 'package:trust/screens/map_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -108,14 +108,16 @@ class ServicesSection extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       children: [
         ServiceButton(
-            icon: Icons.directions_car, label: 'Order a Large Truck', onTap: () {}),
+            icon: Icons.directions_car,
+            label: 'Order a Large Truck',
+            onTap: () {}),
         ServiceButton(
           icon: Icons.directions_car,
           label: 'Order a Medium Truck',
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const HomeTabPage()),
+              MaterialPageRoute(builder: (context) => MapScreen()),
             );
           },
         ),
@@ -153,4 +155,3 @@ class ServiceButton extends StatelessWidget {
     );
   }
 }
-

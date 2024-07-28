@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:trust/screens/dashboard.dart';
@@ -53,7 +54,8 @@ class _MyAppState extends State<MyApp> {
   }
 
   // Add profile update functions
-  void _updateProfile(String name, String email, String location, String address, String profileImage) {
+  void _updateProfile(String name, String email, String location,
+      String address, String profileImage) {
     setState(() {
       _name = name;
       _email = email;
@@ -69,8 +71,10 @@ class _MyAppState extends State<MyApp> {
       designSize: Size(375, 812),
       builder: (context, child) {
         return MaterialApp(
+          debugShowCheckedModeBanner: false,
           theme: ThemeData(
-            colorScheme: ColorScheme.fromSwatch(primarySwatch: _createMaterialColor(_themeColor)),
+            colorScheme: ColorScheme.fromSwatch(
+                primarySwatch: _createMaterialColor(_themeColor)),
             textTheme: TextTheme(
               bodyMedium: TextStyle(
                 fontFamily: _fontStyle,

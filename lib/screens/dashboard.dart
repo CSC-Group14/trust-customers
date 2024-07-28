@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:trust/screens/profile_picture.dart';
 import 'package:trust/screens/profile_screen.dart';
-import 'package:trust/screens/order_history_screen.dart';
 import 'package:trust/screens/settings_screen.dart';
-import 'package:trust/screens/map_screen.dart'; // Import the MapScreen
+import 'package:trust/screens/map_screen.dart';
+import 'package:trust/services/send_request.dart';
+import 'package:trust/services/trip_history.dart';
 
 class CustomerDashboard extends StatelessWidget {
   final Color themeColor;
@@ -37,7 +38,7 @@ class CustomerDashboard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Lets get to it'),
+        title: Text('Welcome Back', semanticsLabel: name),
         backgroundColor: themeColor,
       ),
       drawer: Drawer(
@@ -78,16 +79,16 @@ class CustomerDashboard extends StatelessWidget {
                         )),
               );
             }),
-            _buildDrawerItem(Icons.history, 'Trusted Drivers', () {
+            _buildDrawerItem(Icons.history, 'Trip History', () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => HomeScreen()),
+                MaterialPageRoute(builder: (context) => TripHistoryScreen()),
               );
             }),
             _buildDrawerItem(Icons.directions_car, 'Get Driver', () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => HomeTabPage()),
+                MaterialPageRoute(builder: (context) => MapScreen()),
               );
             }),
             _buildDrawerItem(Icons.settings, 'Settings', () {
@@ -117,11 +118,9 @@ class CustomerDashboard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildProfileSection(),
-            SizedBox(height: 20.h),
-            _buildSectionTitle('Recent Orders'),
-            SizedBox(height: 10.h),
-            // _buildRecentOrdersList(),
+            _buildServiceButtons(context),
+            SizedBox(height: 200.h),
+            _buildFooter(),
           ],
         ),
       ),
@@ -136,21 +135,104 @@ class CustomerDashboard extends StatelessWidget {
     );
   }
 
-  Widget _buildProfileSection() {
-    return Row(
+  Widget _buildServiceButtons(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        ProfilePicture(image: profileImage),
-        SizedBox(width: 15.w),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        SizedBox(height: 10.h),
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10.w),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 2,
+                blurRadius: 5,
+                offset: Offset(0, 3),
+              ),
+            ],
+          ),
+          padding: EdgeInsets.all(10.h),
+          child: Text(
+            'Your Trusted Partner in Logistics. '
+            'Experience seamless and efficient logistics services with LogiTrust. '
+            'From small parcels to large shipments, we ensure timely, safe, and hassle-free deliveries. '
+            'Track your shipments in real-time and manage your logistics effortlessly with our app.',
+            style: TextStyle(color: Colors.black),
+          ),
+        ),
+        SizedBox(height: 30.h),
+        Text(
+          'Our Services',
+          style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+        ),
+        SizedBox(height: 10.h),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Text(
-              name,
-              style: TextStyle(fontSize: 22.sp, fontWeight: FontWeight.bold),
+            Expanded(
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MapScreen()),
+                  );
+                },
+                child: Column(
+                  children: [
+                    Image.asset(
+                      'assets/images/smalltruck.png',
+                      fit: BoxFit.contain,
+                      height: 60.h,
+                    ),
+                    SizedBox(height: 5.h),
+                    Text('Small Truck'),
+                  ],
+                ),
+              ),
             ),
-            Text(
-              email,
-              style: TextStyle(fontSize: 16.sp, color: Colors.grey),
+            Expanded(
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MapScreen()),
+                  );
+                },
+                child: Column(
+                  children: [
+                    Image.asset(
+                      'assets/images/mediumtruck.jpg',
+                      fit: BoxFit.contain,
+                      height: 60.h,
+                    ),
+                    SizedBox(height: 5.h),
+                    Text('Medium Truck'),
+                  ],
+                ),
+              ),
+            ),
+            Expanded(
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MapScreen()),
+                  );
+                },
+                child: Column(
+                  children: [
+                    Image.asset(
+                      'assets/images/bigtruck.jpg',
+                      fit: BoxFit.contain,
+                      height: 60.h,
+                    ),
+                    SizedBox(height: 5.h),
+                    Text('Big Truck'),
+                  ],
+                ),
+              ),
             ),
           ],
         ),
@@ -158,10 +240,30 @@ class CustomerDashboard extends StatelessWidget {
     );
   }
 
-  Widget _buildSectionTitle(String title) {
-    return Text(
-      title,
-      style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+  Widget _buildFooter() {
+    return Container(
+      padding: EdgeInsets.all(15.w),
+      color: Colors.transparent,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Contact Us:',
+            style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 5.h),
+          Text(
+            'For more information please contact us:',
+            style: TextStyle(fontSize: 16.sp),
+          ),
+          SizedBox(height: 5.h),
+          Text(
+            'Contact: 003-456-7890\n'
+            'Email: logitrust@domain.com',
+            style: TextStyle(fontSize: 16.sp, color: Colors.blue),
+          ),
+        ],
+      ),
     );
   }
 }

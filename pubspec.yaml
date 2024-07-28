@@ -34,6 +34,7 @@ dependencies:
   
   geocoding: ^3.0.0
   http: ^1.2.2
+  url_launcher: ^6.3.0
 
 
 dev_dependencies:
@@ -51,3 +52,10 @@ flutter:
     - assets/images/onboarding3.png
     - assets/images/R.jpg
     - assets/images/Klano.jpg
+    - assets/images/smalltruck.png
+    - assets/images/bigtruck.jpg
+    - assets/images/mediumtruck.jpg
+    - assets/images/red_marker.png
+    - assets/images/green_marker.png
+    - assets/images/truck_icon.png
+
