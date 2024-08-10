@@ -42,15 +42,28 @@ class _MainScreenState extends State<MainScreen> {
       'ZDQ0NGEzNzctMzVjZC00OTc2LWE4ZmUtNDUzNTQxOWUwNzQ5';
 
   Future<void> sendNotification() async {
-    final url = 'https://onesignal.com/api/v1/notifications';
+    const url = 'https://onesignal.com/api/v1/notifications';
     final headers = {
       'Content-Type': 'application/json; charset=utf-8',
       'Authorization': 'Basic $oneSignalApiKey',
     };
     final body = jsonEncode({
       'app_id': oneSignalAppId,
-      'contents': {'en': 'Hello from Flutter!'},
+      'headings': {'en': 'LogiTrust'},
+      'contents': {'en': 'New Ride request Available!'},
       'included_segments': ['All'],
+      'data': {
+        'screen' : '/main_screen',
+      },
+      'buttons': [
+        {
+          'id': 'view',
+          'text': 'View',
+          'icon': 'icon_url',
+          'url': 'myapp://main_screen'
+        }
+      ],
+
     });
 
     final response =
