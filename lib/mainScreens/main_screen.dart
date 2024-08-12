@@ -11,6 +11,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:logitrust_drivers/global/push_notification_service.dart';
+import 'package:logitrust_drivers/mainScreens/new_trips.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_star_rating_nsafe/smooth_star_rating.dart';
 import 'package:logitrust_drivers/assistants/Geofire_assistant.dart';
@@ -53,7 +54,7 @@ class _MainScreenState extends State<MainScreen> {
       'contents': {'en': 'Ride request accepted, Driver about to call!'},
       'included_segments': ['All'],
       'data': {
-        'screen' : '/main_screen',
+        'screen': '/main_screen',
       },
       'buttons': [
         {
@@ -63,7 +64,6 @@ class _MainScreenState extends State<MainScreen> {
           'url': 'myapp://main_screen'
         }
       ],
-
     });
 
     final response =
@@ -467,7 +467,11 @@ class _MainScreenState extends State<MainScreen> {
     super.initState();
     checkIfPermissionAllowed();
     AssistantMethods.readRideRequestKeys(context);
+    listenForRideRequestUpdates();
   }
+
+  final FirebaseDatabase _database = FirebaseDatabase.instance;
+  DatabaseReference? _rideRequestRef;
 
   @override
   Widget build(BuildContext context) {
@@ -509,7 +513,6 @@ class _MainScreenState extends State<MainScreen> {
                   SystemNavigator.pop();
                 }
               },
-              
               child: CircleAvatar(
                 backgroundColor: Colors.white70,
                 child: Icon(
@@ -1169,5 +1172,61 @@ class _MainScreenState extends State<MainScreen> {
         activeNearbyIcon = value;
       });
     }
+  }
+
+  @override
+  void dispose() {
+    _rideRequestRef?.onDisconnect();
+    super.dispose();
+  }
+
+  void listenForRideRequestUpdates() {
+    _rideRequestRef = _database.ref().child('AllRideRequests');
+    _rideRequestRef!.onValue.listen((event) {
+      if (event.snapshot.exists) {
+        String status = event.snapshot.child('status').value.toString();
+        if (status == 'Accepted') {
+          showDriverDetailsDialog(event.snapshot);
+        }
+      }
+    });
+  }
+
+  void showDriverDetailsDialog(DataSnapshot snapshot) {
+    final driverName = snapshot.child('driverName').value ?? 'Unknown Driver';
+    final driverPhone =
+        snapshot.child('driverPhone').value ?? 'No phone number';
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Driver Accepted Your Request'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Driver Name: $driverName'),
+              Text('Driver Phone: $driverPhone'),
+            ],
+          ),
+          actions: [
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) => TripScreen(
+                      rideRequestId: '',
+                    ), // Pass the ID
+                  ),
+                );
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }
