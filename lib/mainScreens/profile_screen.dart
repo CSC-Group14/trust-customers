@@ -1,7 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:logitrust_drivers/global/global.dart';
 import 'package:logitrust_drivers/mainScreens/edit_profile_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:io';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -11,255 +11,118 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  String name = 'Loading...';
+  String email = 'Loading...';
+  String location = 'Loading...';
+  String? _imageUrl;
+  File? _imageFile;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchUserData();
+  }
+
+  Future<void> _fetchUserData() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      name = prefs.getString('name') ?? 'Unknown';
+      email = prefs.getString('email') ?? 'Unknown';
+      location = prefs.getString('location') ?? 'Unknown';
+      _imageUrl = prefs.getString('profileImageUrl');
+      if (_imageUrl != null && _imageUrl!.isNotEmpty) {
+        _imageFile = File(_imageUrl!);
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: Stack(
-        alignment: Alignment.center,
-        children: [
-          Column(
-            children: [
-              Container(
-                height: 150,
-                decoration: BoxDecoration(
-                  color: Colors.black,
-                ),
-              ),
-
-              Expanded(
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  decoration: const BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(20),
-                        topLeft: Radius.circular(20),
-                      )
-                  ),
-
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-
-                      const SizedBox(height: 60,),
-
-                      Center(
-                        child: Text(
-                          currentUserInfo!.name!,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                          ),
-                        ),
-                      ),
-
-                      SizedBox(height: 8,),
-
-                      Center(
-                        child: TextButton(
-                          onPressed: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => const EditProfileScreen()));
-                          },
-                          child: Text(
-                              'Edit Profile',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 15,
-                                color: Colors.grey[600],
-                              )
-                          ),
-                        ),
-                      ),
-
-                     const SizedBox(height: 20,),
-
-                      const Text(
-                        'FAVOURITES',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                        ),
-                      ),
-
-                      const SizedBox(height: 20,),
-
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Icon(Icons.home,size: 30,color: Colors.grey[400]),
-
-                              SizedBox(width: 15,),
-
-                              const Text(
-                                'Home',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15,
-                                ),
-                              ),
-                            ],
-                          ),
-
-                          Icon(Icons.arrow_forward_ios),
-
-                        ],
-                      ),
-
-                      SizedBox(height: 10,),
-
-                      Divider(
-                        thickness: 1,
-                      ),
-
-                      SizedBox(height: 10,),
-
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Icon(Icons.work,size: 30,color: Colors.grey[400],),
-
-                              SizedBox(width: 15,),
-
-                              Text(
-                                'Work',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15,
-                                ),
-                              ),
-                            ],
-                          ),
-
-                          Icon(Icons.arrow_forward_ios),
-
-                        ],
-                      ),
-
-                      SizedBox(height: 10,),
-
-                      Divider(
-                        thickness: 1,
-                      ),
-
-                      SizedBox(height: 10,),
-
-                      Text(
-                        'FAVOURITES',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                        ),
-                      ),
-
-                      SizedBox(height: 20,),
-
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Notifications',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                            ),
-                          ),
-
-                          Icon(Icons.notifications),
-                        ],
-                      ),
-
-                      SizedBox(height: 10,),
-
-                      Divider(
-                        thickness: 1,
-                      ),
-
-                      SizedBox(height: 10,),
-
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Payment Method',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                            ),
-                          ),
-
-                          Icon(Icons.arrow_forward_ios),
-                        ],
-                      ),
-
-                      SizedBox(height: 10,),
-
-                      Divider(
-                        thickness: 1,
-                      ),
-
-                      SizedBox(height: 10,),
-
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
-                          Text(
-                            'My Rewards',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                            ),
-                          ),
-
-                          Icon(Icons.arrow_forward_ios),
-                        ],
-                      ),
-
-                      const SizedBox(height: 10,),
-
-                      Divider(
-                        thickness: 1,
-                      ),
-
-                      const SizedBox(height: 10,),
-
-
-                    ],
-                  ),
-                ),
-              ),
-
-
-
-            ],
-          ),
-
-          Positioned(
-            top: 100,
-            child: Container(
-              height: 100,
-              width: 100,
-              decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.grey[200],
-                  border: Border.all(
-                    width: 2,
-                    color: Colors.white,
-                  )
-              ),
-              child: Icon(Icons.person),
+      appBar: AppBar(
+        title: const Text('Profile'),
+        backgroundColor: Colors.teal,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            CircleAvatar(
+              radius: 60,
+              backgroundColor: Colors.grey[300],
+              backgroundImage:
+                  _imageFile != null ? FileImage(_imageFile!) : null,
+              child: _imageFile == null
+                  ? const Icon(Icons.person, size: 60, color: Colors.white)
+                  : null,
             ),
-          ),
+            const SizedBox(height: 24),
+            Text(
+              name,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 28,
+                color: Colors.black87,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              email,
+              style: const TextStyle(
+                fontSize: 18,
+                color: Colors.black54,
+              ),
+            ),
+            const SizedBox(height: 24),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(Icons.location_on, color: Colors.teal),
+                const SizedBox(width: 8),
+                Text(
+                  location,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    color: Colors.black54,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 32),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.teal, // Button background color
+                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+              ),
+              onPressed: () async {
+                // Navigate to EditProfileScreen and wait for result
+                final result = await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const EditProfileScreen()),
+                );
 
-
-
-        ],
+                // Refresh data if profile was edited
+                if (result == true) {
+                  _fetchUserData();
+                }
+              },
+              child: const Text(
+                'Edit Profile',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
-}
-
+  }
 }

@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
-import '../models/active_nearby_available_drivers.dart';
 import '../models/direction_details_info.dart';
 import '../models/user_model.dart';
 
