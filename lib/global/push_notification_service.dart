@@ -1,11 +1,9 @@
 import 'dart:convert';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:googleapis_auth/auth_io.dart' as auth;
-import 'package:googleapis/servicecontrol/v1.dart' as servicecontrol;
 
 class PushNotificationsService {
   static Future<String> getAccessToken() async {

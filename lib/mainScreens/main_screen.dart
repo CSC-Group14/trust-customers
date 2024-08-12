@@ -50,7 +50,7 @@ class _MainScreenState extends State<MainScreen> {
     final body = jsonEncode({
       'app_id': oneSignalAppId,
       'headings': {'en': 'LogiTrust'},
-      'contents': {'en': 'New Ride request Available!'},
+      'contents': {'en': 'Ride request accepted, Driver about to call!'},
       'included_segments': ['All'],
       'data': {
         'screen' : '/main_screen',
@@ -498,8 +498,8 @@ class _MainScreenState extends State<MainScreen> {
 
           // Button for Drawer
           Positioned(
-            top: 35,
-            left: 15,
+            top: 50,
+            left: 10,
             child: GestureDetector(
               onTap: () {
                 if (openNavigationDrawer) {
@@ -509,6 +509,7 @@ class _MainScreenState extends State<MainScreen> {
                   SystemNavigator.pop();
                 }
               },
+              
               child: CircleAvatar(
                 backgroundColor: Colors.white70,
                 child: Icon(
@@ -647,7 +648,7 @@ class _MainScreenState extends State<MainScreen> {
                             backgroundColor: Colors.yellowAccent,
                             textStyle: const TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.bold)),
-                        child: const Text("Request a ride"),
+                        child: const Text("Get a Driver"),
                       )
                     ],
                   ),
