@@ -25,6 +25,7 @@ class _TripScreenState extends State<TripScreen> {
   String _driverPhone = '';
   String _driverImageUrl = '';
   Set<Marker> _markers = Set<Marker>();
+  Set<Polyline> _polylines = Set<Polyline>();
   String _statusMessage = '';
 
   @override
@@ -59,6 +60,7 @@ class _TripScreenState extends State<TripScreen> {
             LatLng(_currentLocation.latitude!, _currentLocation.longitude!),
           ),
         );
+        _updateMap(); // Update map to draw polyline with current location
       }
     } catch (e) {
       print('Error getting location: $e');
@@ -132,6 +134,23 @@ class _TripScreenState extends State<TripScreen> {
                 BitmapDescriptor.hueAzure),
           ),
         );
+
+        // Add a polyline between current location and driver location
+        if (_currentLocation != null) {
+          _polylines.clear(); // Clear previous polylines
+          _polylines.add(
+            Polyline(
+              polylineId: PolylineId('route'),
+              visible: true,
+              points: [
+                LatLng(_currentLocation.latitude!, _currentLocation.longitude!),
+                _driverLocation!,
+              ],
+              color: Colors.blue,
+              width: 5,
+            ),
+          );
+        }
       });
     }
   }
@@ -164,6 +183,7 @@ class _TripScreenState extends State<TripScreen> {
             myLocationEnabled: true,
             myLocationButtonEnabled: true,
             markers: _markers,
+            polylines: _polylines, // Add polylines to the map
           ),
           Positioned(
             bottom: 0,
