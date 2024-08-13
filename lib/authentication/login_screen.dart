@@ -2,12 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
-
-import 'package:logitrust_drivers/utils/token_manager.dart';
-import '../widgets/progress_dialog.dart';
-import '../global/global.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -20,54 +14,18 @@ class _LoginState extends State<Login> {
 
   final _formKey = GlobalKey<FormState>();
 
-  @override
-  void initState() {
-    super.initState();
-  }
+  void loginUser() {
+    // Show "Please wait" toast
+    Fluttertoast.showToast(msg: "Please wait, logging in...");
 
-  loginUser() async {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return ProgressDialog(message: "Processing, Please wait");
-      },
-    );
+    // Delay for 3 seconds
+    Future.delayed(const Duration(seconds: 3), () {
+      // After delay, show "Login Successful" toast
+      Fluttertoast.showToast(msg: "Login Successful.");
 
-    final User? firebaseUser = (await firebaseAuth
-            .signInWithEmailAndPassword(
-      email: emailTextEditingController.text.trim(),
-      password: passwordTextEditingController.text.trim(),
-    )
-            .catchError((message) {
-      Navigator.pop(context);
-      Fluttertoast.showToast(msg: "Error: " + message.toString());
-    }))
-        .user;
-
-    if (firebaseUser != null) {
-      DatabaseReference usersRef =
-          FirebaseDatabase.instance.ref().child("Users");
-      usersRef.child(firebaseUser.uid).once().then((snap) async {
-        if (snap.snapshot.value != null) {
-          currentFirebaseUser = firebaseUser;
-
-          // Store the device token
-          TokenManager tokenManager = TokenManager(userId: firebaseUser.uid);
-          await tokenManager.storeToken();
-
-          Fluttertoast.showToast(msg: "Login Successful.");
-          Navigator.pushNamed(context, '/main_screen');
-        } else {
-          Navigator.pop(context);
-          firebaseAuth.signOut();
-          Fluttertoast.showToast(msg: "No record exists for this user.");
-        }
-      });
-    } else {
-      Navigator.pop(context);
-      Fluttertoast.showToast(msg: "Error Occurred. Can't Sign in.");
-    }
+      // Navigate to the main screen
+      Navigator.pushReplacementNamed(context, '/main_screen');
+    });
   }
 
   @override
@@ -110,10 +68,8 @@ class _LoginState extends State<Login> {
                       focusedBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.white),
                       ),
-                      hintStyle:
-                          TextStyle(color: Colors.grey, fontSize: 10),
-                      labelStyle:
-                          TextStyle(color: Colors.white, fontSize: 15),
+                      hintStyle: TextStyle(color: Colors.grey, fontSize: 10),
+                      labelStyle: TextStyle(color: Colors.white, fontSize: 15),
                     ),
                     validator: (value) {
                       if (value!.isEmpty) {
@@ -144,10 +100,8 @@ class _LoginState extends State<Login> {
                       focusedBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.white),
                       ),
-                      hintStyle:
-                          TextStyle(color: Colors.grey, fontSize: 10),
-                      labelStyle:
-                          TextStyle(color: Colors.white, fontSize: 15),
+                      hintStyle: TextStyle(color: Colors.grey, fontSize: 10),
+                      labelStyle: TextStyle(color: Colors.white, fontSize: 15),
                     ),
                     validator: (value) {
                       if (value!.isEmpty) {
@@ -161,8 +115,9 @@ class _LoginState extends State<Login> {
                   ),
                   const SizedBox(height: 20),
                   ElevatedButton(
-                    style:
-                        ElevatedButton.styleFrom(backgroundColor: Colors.white),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                    ),
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         loginUser();
