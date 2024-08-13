@@ -50,7 +50,8 @@ class _DashboardDrawerState extends State<DashboardDrawer> {
                   CircleAvatar(
                     radius: 40,
                     backgroundColor: Colors.grey[200],
-                    backgroundImage: _imageFile != null ? FileImage(_imageFile!) : null,
+                    backgroundImage:
+                        _imageFile != null ? FileImage(_imageFile!) : null,
                     child: _imageFile == null
                         ? const Icon(
                             Icons.person,
@@ -127,7 +128,7 @@ class _DashboardDrawerState extends State<DashboardDrawer> {
           GestureDetector(
             onTap: () {
               // Sign out
-              Navigator.pushNamed(context, '/');
+              Navigator.pushNamed(context, '/login_screen');
             },
             child: const ListTile(
               leading: Icon(Icons.logout, color: Colors.black),
