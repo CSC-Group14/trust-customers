@@ -1,12 +1,12 @@
 // ignore_for_file: unused_local_variable
 
 import 'dart:convert';
-import 'package:http/http.dart' as http;
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
 import 'package:smooth_star_rating_nsafe/smooth_star_rating.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:logitrust_drivers/assistants/assistant_methods.dart';
 import 'package:logitrust_drivers/global/global.dart';
 
@@ -33,8 +33,6 @@ class _SelectActiveDriverScreenState extends State<SelectActiveDriverScreen> {
     return fareAmount;
   }
 
-  
-
   void requestRide() async {
     if (chosenDriverId.isNotEmpty) {
       // Send notification using OneSignal
@@ -54,7 +52,7 @@ class _SelectActiveDriverScreenState extends State<SelectActiveDriverScreen> {
 
       if (driverSnapshot.exists) {
         Map<String, dynamic> driverData = driverSnapshot.value as Map<String, dynamic>;
-        String? playerId = driverData["onesignalPlayerId"]; // Use the correct field name
+        String? playerId = driverData["onesignalPlayerId"] as String?;
 
         if (playerId != null) {
           print("Driver's OneSignal Player ID: $playerId");
@@ -66,6 +64,7 @@ class _SelectActiveDriverScreenState extends State<SelectActiveDriverScreen> {
           DataSnapshot rideRequestSnapshot = rideRequestEvent.snapshot;
 
           if (rideRequestSnapshot.exists) {
+            // Assuming the ride request data structure here
             Map<String, dynamic> rideRequestData = rideRequestSnapshot.value as Map<String, dynamic>;
             String? rideRequestId = rideRequestSnapshot.key;
 
@@ -144,9 +143,9 @@ class _SelectActiveDriverScreenState extends State<SelectActiveDriverScreen> {
                   return Container();
                 }
 
-                var carDetails = driver["carDetails"];
+                var carDetails = driver["carDetails"] as Map<dynamic, dynamic>?;
                 var carType = carDetails != null
-                    ? carDetails["carType"] ?? "Unknown Type"
+                    ? (carDetails["carType"] as String?) ?? "Unknown Type"
                     : "Unknown Type";
                 var carImagePath = "images/$carType.png";
 
@@ -183,7 +182,7 @@ class _SelectActiveDriverScreenState extends State<SelectActiveDriverScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            driver["name"] ?? "No Name",
+                            driver["name"] as String? ?? "No Name",
                             style: const TextStyle(
                                 fontSize: 14, color: Colors.black),
                           ),
@@ -193,10 +192,9 @@ class _SelectActiveDriverScreenState extends State<SelectActiveDriverScreen> {
                                 fontSize: 14, color: Colors.black),
                           ),
                           SmoothStarRating(
-                            rating: driver["ratings"] == null
-                                ? 0.0
-                                : double.tryParse(driver["ratings"] ?? "0.0") ??
-                                    0.0,
+                            rating: driver["ratings"] != null
+                                ? double.tryParse(driver["ratings"].toString()) ?? 0.0
+                                : 0.0,
                             allowHalfRating: true,
                             starCount: 5,
                             size: 15.0,

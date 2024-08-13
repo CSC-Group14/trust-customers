@@ -25,6 +25,7 @@ class _TripScreenState extends State<TripScreen> {
   String _driverPhone = '';
   String _driverImageUrl = '';
   Set<Marker> _markers = Set<Marker>();
+  String _statusMessage = '';
 
   @override
   void initState() {
@@ -82,11 +83,31 @@ class _TripScreenState extends State<TripScreen> {
           _driverPhone = requestData['driverPhone'] ?? 'Unknown Phone';
           _driverImageUrl = requestData['driverImageUrl'] ??
               'https://example.com/default_image.jpg';
+          _updateStatusMessage(requestData['driverStatus'] ?? '');
 
           _updateMap();
         });
       }
     });
+  }
+
+  void _updateStatusMessage(String status) {
+    switch (status) {
+      case 'Accepted':
+        _statusMessage = 'Your Driver is Coming';
+        break;
+      case 'Arrived':
+        _statusMessage = 'Your Driver has Arrived';
+        break;
+      case 'On Trip':
+        _statusMessage = 'The Trip is going On';
+        break;
+      case 'Ended':
+        _statusMessage = 'The Trip has Ended. Please Pay';
+        break;
+      default:
+        _statusMessage = '';
+    }
   }
 
   void _updateMap() {
@@ -164,32 +185,51 @@ class _TripScreenState extends State<TripScreen> {
                   ),
                 ],
               ),
-              child: Row(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center, // Center align
                 children: [
-                  CircleAvatar(
-                    backgroundImage: NetworkImage(_driverImageUrl),
-                    radius: 30,
-                  ),
-                  SizedBox(width: 16),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          _driverName,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16),
+                  if (_statusMessage.isNotEmpty)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 8.0),
+                      child: Text(
+                        _statusMessage,
+                        textAlign: TextAlign.center, // Center align text
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18, // Medium size
+                          color: Colors.green, // Green color
                         ),
-                        Text(
-                          _driverPhone,
-                          style: TextStyle(color: Colors.grey[600]),
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.phone),
-                    onPressed: () => _makePhoneCall(_driverPhone),
+                  Divider(height: 1.0, color: Colors.grey[300]),
+                  Row(
+                    children: [
+                      CircleAvatar(
+                        backgroundImage: NetworkImage(_driverImageUrl),
+                        radius: 30,
+                      ),
+                      SizedBox(width: 16),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              _driverName,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 16),
+                            ),
+                            Text(
+                              _driverPhone,
+                              style: TextStyle(color: Colors.grey[600]),
+                            ),
+                          ],
+                        ),
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.phone),
+                        onPressed: () => _makePhoneCall(_driverPhone),
+                      ),
+                    ],
                   ),
                 ],
               ),

@@ -38,7 +38,7 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  final String oneSignalAppId = 'c23509de-1134-4a59-a802-3d5e133d16cf';
+  final String oneSignalAppId = '8919687a-effe-4f5f-929d-1cbac7845e8f';
   final String oneSignalApiKey =
       'ZDQ0NGEzNzctMzVjZC00OTc2LWE4ZmUtNDUzNTQxOWUwNzQ5';
 
@@ -1184,8 +1184,8 @@ class _MainScreenState extends State<MainScreen> {
     _rideRequestRef = _database.ref().child('AllRideRequests');
     _rideRequestRef!.onValue.listen((event) {
       if (event.snapshot.exists) {
-        String status = event.snapshot.child('status').value.toString();
-        if (status == 'Accepted') {
+        String driverStatus = event.snapshot.child('driverStatus').value.toString();
+        if (driverStatus == 'Accepted') {
           showDriverDetailsDialog(event.snapshot);
         }
       }
